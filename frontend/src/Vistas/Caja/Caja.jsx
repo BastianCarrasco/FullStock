@@ -182,6 +182,7 @@ const Caja = () => {
             {item.codigobarra}
           </button>
         ))}
+        <br></br>
         <button onClick={handlePrintPDF} style={{ marginTop: '10px' }}>
           Imprimir PDF
         </button>

@@ -28,11 +28,7 @@ function App() {
     const foundUser = userlist.find(u => u.nombre === usuario && u.password === clave);
 
     if (foundUser) {
-      if (usuario === 'Camila' && clave === 'Evian') {
-        setUser(foundUser.nombre);
-      } else {
-        setUser(foundUser.nombre); // Esto permite que cualquier usuario autenticado vea las otras vistas
-      }
+      setUser(foundUser.nombre);
     } else {
       alert('Usuario o clave incorrectos');
     }
@@ -51,16 +47,18 @@ function App() {
                 <li>
                   <Link to="/caja">Caja</Link>
                 </li>
-                <li>
-                  <Link to="/stock">Stock</Link>
-                </li>
-                <li>
-                  <Link to="/ventas">Ventas</Link>
-                </li>
                 {user === 'Camila' && (
-                  <li>
-                    <Link to="/admin">Administrador</Link>
-                  </li>
+                  <>
+                    <li>
+                      <Link to="/stock">Stock</Link>
+                    </li>
+                    <li>
+                      <Link to="/ventas">Ventas</Link>
+                    </li>
+                    <li>
+                      <Link to="/admin">Administrador</Link>
+                    </li>
+                  </>
                 )}
                 <li>{user}</li>
               </>
@@ -96,10 +94,12 @@ function App() {
             {user && (
               <>
                 <Route path="/caja" element={<Caja />} />
-                <Route path="/stock" element={<Stock />} />
-                <Route path="/ventas" element={<Ventas />} />
                 {user === 'Camila' && (
-                  <Route path="/admin" element={<Administrador />} />
+                  <>
+                    <Route path="/stock" element={<Stock />} />
+                    <Route path="/ventas" element={<Ventas />} />
+                    <Route path="/admin" element={<Administrador />} />
+                  </>
                 )}
               </>
             )}

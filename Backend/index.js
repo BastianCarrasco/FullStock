@@ -33,6 +33,7 @@ async function connectDB() {
   }
 }
 
+// connectDB();
 
 app.put('/productoPut/:id', async (req, res) => {
   const { id } = req.params;
@@ -110,6 +111,24 @@ app.delete('/producto/:id', async (req, res) => {
     res.status(500).json({ error: 'Error ejecutando la consulta DELETE' });
   }
 });
+
+app.delete('/eliminarUsuario/:idUsuario', async (req, res) => {
+  const { idUsuario } = req.params;
+
+  try {
+    const result = await client.query(
+      'SELECT eliminarUsuario($1)',
+      [idUsuario]
+    );
+
+    res.status(200).json({ success: true, message: 'Usuario eliminado correctamente' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: 'Error al eliminar usuario' });
+  }
+});
+
+
 
 
 app.get('/productoStock', async (req, res) => {
@@ -197,6 +216,59 @@ app.post('/insertarProducto', async (req, res) => {
     res.status(500).json({ error: 'Error ejecutando la consulta de inserción' });
   }
 });
+
+
+app.post('/insertarUsuario', async (req, res) => {
+  const { nombre, apellido, email, password } = req.body;
+
+  try {
+    const result = await client.query(
+      'SELECT insertarUsuario($1, $2, $3, $4)',
+      [nombre, apellido, email, password]
+    );
+
+    res.status(200).json({ success: true, message: 'Usuario insertado correctamente' });
+  } catch (err) {
+    console.error('Error al insertar usuario:', err);
+    res.status(500).json({ success: false, message: 'Error al insertar usuario', error: err.message });
+  }
+});
+
+app.post('/insertarProv', async (req, res) => {
+  const { nombre, infocontacto } = req.body;
+
+  try {
+    // Insertar el proveedor
+    const result = await client.query(
+      'select insertarProveedorYPedido($1,$2,47,0,NULL,NULL)',
+      [nombre, infocontacto]
+    );
+
+    res.status(200).json({ success: true, message: 'Proveedor insertado correctamente'});
+  } catch (err) {
+    console.error('Error al insertar proveedor:', err);
+    res.status(500).json({ success: false, message: 'Error al insertar proveedor', error: err.message });
+  }
+});
+
+// Endpoint para eliminar un proveedor por su ID
+app.delete('/eliminarProv/:id', async (req, res) => {
+  const idProveedor = req.params.id;
+
+  try {
+    // Eliminar el proveedor por su ID
+    await client.query(
+      'SELECT eliminarProveedorYPedidos($1)',
+      [idProveedor]
+    );
+
+    res.status(200).json({ success: true, message: `Proveedor con ID ${idProveedor} eliminado correctamente` });
+  } catch (err) {
+    console.error('Error al eliminar proveedor:', err);
+    res.status(500).json({ success: false, message: 'Error al eliminar proveedor', error: err.message });
+  }
+});
+
 
 
 async function main() {
