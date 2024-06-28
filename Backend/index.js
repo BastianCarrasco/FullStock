@@ -240,7 +240,7 @@ app.post('/insertarProv', async (req, res) => {
   try {
     // Insertar el proveedor
     const result = await client.query(
-      'select insertarProveedorYPedido($1,$2,47,0,NULL,NULL)',
+      'select insertarProveedorYPedido($1,$2,49,0,NULL,NULL)',
       [nombre, infocontacto]
     );
 
